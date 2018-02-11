@@ -7,7 +7,7 @@ import logging
 import time
 
 # private key, delete when publish
-private_key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NDk4MTUxMDAsImp0aSI6ImM1MjdhMWUyLTE3ZjMtNDUyNS1hNjkzLTc0OGVjMzZiMmEwZSJ9.OhBEO0bFfAvKPPKfkvCotpmVIKPz2GSWeF8UkU7GwlI:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NDk4MTUxMDB9.YuQtu2A4N7WsOBTUacnvzNKWkKvHfBuL-5_AD1cm4lE"
+private_key = ""
 
 
 if __name__ == '__main__':
