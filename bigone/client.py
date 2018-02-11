@@ -6,7 +6,7 @@ from uuid import uuid4
 from .exceptions import BigoneAPIException, BigoneRequestException
 
 
-class Client(object):
+class BigOneDog(object):
 
     API_URL = 'https://api.big.one'
 
@@ -14,6 +14,7 @@ class Client(object):
     SIDE_ASK = 'ASK'
 
     def __init__(self, api_key):
+
         """Big.One API Client constructor
 
         https://developer.big.one/
@@ -38,7 +39,7 @@ class Client(object):
 
         session = requests.session()
         headers = {'Accept': 'application/json',
-                   'User-Agent': 'python-bigone',
+                   'User-Agent': 'Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.94 Safari/537.36',
                    'Authorization': 'Bearer {}'.format(self.API_KEY),
                    'Big-Device-Id': self.UUID}
         session.headers.update(headers)
