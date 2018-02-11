@@ -1,3 +1,5 @@
+# coding: utf-8
+
 import logging
 import logging.config
 import os
@@ -17,7 +19,7 @@ def gen_logger(_name):
 
     filename = os.path.join('%s.log' % _name).replace('\\', '/')
 
-    hdlr = TimedRotatingFileHandler(filename, 'midnight', 1, 0)
+    hdlr = TimedRotatingFileHandler(filename, 'midnight', 1, 0,encoding='utf8')
     hdlr.setFormatter(fmt)
     logger.addHandler(hdlr)
 

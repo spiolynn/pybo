@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 """
 exception model of ZIEN Models
 @Author: chengli
