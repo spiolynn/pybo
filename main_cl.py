@@ -31,9 +31,9 @@ def strategy_eth_big_bnc_eth(dog):
 
     # positive transaction
     pos_anc = 0.999*0.999*0.999*\
-              ((1 / (float(big_eth_data['bids'][0]['price'])))
-              * float(big_bnc_data['asks'][0]['price']) )
-    pos_anc = pos_anc / float(eth_bnc_data['bids'][0]['price']) - 1
+              ((1 / (float(big_eth_data['asks'][0]['price'])))
+              * float(big_bnc_data['bids'][0]['price']) )
+    pos_anc = pos_anc / float(eth_bnc_data['asks'][0]['price']) - 1
 
     # negative transaction
     neg_anc = 0.999 * 0.999 * 0.999 * \
@@ -41,6 +41,41 @@ def strategy_eth_big_bnc_eth(dog):
            / float(big_bnc_data['asks'][0]['price'])
            * float(big_eth_data['asks'][0]['price']))
     neg_anc = neg_anc / 1 - 1
+
+    flag = False
+
+    if float(big_eth_data['asks'][0]['amount']) >= 2.0:
+        flag = True
+    else:
+        flag = False
+    if float(big_bnc_data['bids'][0]['amount']) >= 2.0:
+        flag = True
+    else:
+        flag = False
+    if float(eth_bnc_data['bids'][0]['amount']) >= 2.0 * float(big_eth_data['asks'][0]['price']):
+        flag = True
+    else:
+        flag = False
+
+    if pos_anc < 0.01 or flag is False:
+        result = "利润空间小于1%, 放弃本次套利 0"
+    else:
+        result = "利润空间大于1%, 执行本次套利 1"
+        # dog.create_order('BIG-ETH',big_eth_data['asks'][0]['price'], 2)
+
+        logger.info("预期本次[正向套利:买BIG/ETH -> 卖BIG/BNC -> 买ETH/BNC]利润: {0:.2f}%, {1}".format(pos_anc*100,result))
+
+    if neg_anc < 0.01:
+        result = "利润空间小于1%, 放弃本次套利 0"
+    else:
+        result = "利润空间大于1%, 执行本次套利 1"
+
+        logger.info("预期本次[反向套利:卖ETH/BNC -> 买BIG/BNC -> 卖BIG/ETH]利润: {0:.2f}%, {1}".format(neg_anc*100,result))
+
+    print("休眠10秒")
+    print("")
+    time.sleep(10)
+
 
     return pos_anc, neg_anc
 
@@ -68,32 +103,32 @@ if __name__ == '__main__':
     with open("PRIVATE_KEY.json",'r') as f:
         private_key = json.load(f)["key"]
     dog = BigOneDog(private_key)
-    strategy_eth_bnc(dog)
+    # strategy_eth_bnc(dog)
     # dog.get_orders("ETH-BNC",'10')
     # r = dog.get_order("b79ef031-c477-46f9-b452-7e97aa97435d")
     # print(r)
     # r = dog.get_orders('ETH-BNC','10')
     # print(r)
 
-    while False:
+    while True:
 
-        # pos_anc, neg_anc = strategy_eth_big_bnc_eth(dog)
-        pos_anc, neg_anc = strategy_eth_bnc(dog)
-        if pos_anc < 0.01:
-            result = "利润空间小于1%, 放弃本次套利 0"
-        else:
-            result = "利润空间大于1%, 执行本次套利 1"
-
-        logger.info("预期本次[正向套利:买BIG/ETH -> 卖BIG/BNC -> 买ETH/BNC]利润: {0:.2f}%, {1}".format(pos_anc*100,result))
-
-        if neg_anc < 0.01:
-            result = "利润空间小于1%, 放弃本次套利 0"
-        else:
-            result = "利润空间大于1%, 执行本次套利 1"
-
-        logger.info("预期本次[反向套利:卖ETH/BNC -> 买BIG/BNC -> 卖BIG/ETH]利润: {0:.2f}%, {1}".format(neg_anc*100,result))
-
-        print("休眠10秒")
-        print("")
-        time.sleep(10)
+        pos_anc, neg_anc = strategy_eth_big_bnc_eth(dog)
+        # pos_anc, neg_anc = strategy_eth_bnc(dog)
+        # if pos_anc < 0.01:
+        #     result = "利润空间小于1%, 放弃本次套利 0"
+        # else:
+        #     result = "利润空间大于1%, 执行本次套利 1"
+        #
+        # logger.info("预期本次[正向套利:买BIG/ETH -> 卖BIG/BNC -> 买ETH/BNC]利润: {0:.2f}%, {1}".format(pos_anc*100,result))
+        #
+        # if neg_anc < 0.01:
+        #     result = "利润空间小于1%, 放弃本次套利 0"
+        # else:
+        #     result = "利润空间大于1%, 执行本次套利 1"
+        #
+        # logger.info("预期本次[反向套利:卖ETH/BNC -> 买BIG/BNC -> 卖BIG/ETH]利润: {0:.2f}%, {1}".format(neg_anc*100,result))
+        #
+        # print("休眠10秒")
+        # print("")
+        # time.sleep(10)
 
